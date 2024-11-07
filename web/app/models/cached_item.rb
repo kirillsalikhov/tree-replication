@@ -1,0 +1,2 @@
+class CachedItem < BaseItem
+end
