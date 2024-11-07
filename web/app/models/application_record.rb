@@ -8,7 +8,7 @@ class ApplicationRecord < ActiveRecord::Base
   def generate_uuid_v7
     return if self.class.attribute_types["id"].type != :uuid
 
-    self.id ||= SecureRandom.uuid_v7t l
+    self.id ||= SecureRandom.uuid_v7
   end
 
 end
