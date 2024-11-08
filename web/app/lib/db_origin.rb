@@ -1,0 +1,2 @@
+class DbOrigin < BaseOrigin
+end
