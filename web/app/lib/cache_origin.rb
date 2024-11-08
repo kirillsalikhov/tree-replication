@@ -8,13 +8,26 @@ class CacheOrigin < BaseOrigin
   def apply_load(op)
     puts "apply_load"
     # TODO check exist
-    c = CachedItem.new(op.data.except(:parent_id))
-    c.save!
+    CachedItem.create!(op.data)
   end
 
+  # @param op [Operation::Create]
   def apply_create(op)
+    puts "apply_create"
+    CachedItem.create!(op.data)
   end
 
+  # @param op [Operation::Update]
+  def apply_update(op)
+    puts "apply_update"
+    CachedItem.update!(op.item_id, value: op.value)
+  end
+
+  # @param op [Operation::Remove]
   def apply_remove(op)
+    puts "apply_remove"
+    c = CachedItem.find(op.item_id)
+    c.is_deleted = true
+    c.save!
   end
 end
