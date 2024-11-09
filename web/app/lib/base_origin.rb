@@ -1,5 +1,6 @@
 class BaseOrigin
   include OpRegisterable
+  register_op Operation::Create, :apply_create
 
   def apply(operations)
     operations.each do |op|
@@ -7,4 +8,18 @@ class BaseOrigin
       method(method_name).call(op) if method_name
     end
   end
+
+  # @param op [Operation::Create]
+  def apply_create(op)
+    item_class.create!(op.data)
+  end
+
+  # @param op [Operation::Remove]
+  def apply_update(op)
+    item_class.update!(op.item_id, value: op.value)
+  end
+
+  protected
+
+  def item_class = BaseItem
 end
