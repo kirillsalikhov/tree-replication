@@ -1,17 +1,18 @@
 class Api::OperationsController < Api::ApplicationController
   def create
-    render_op Operation::CreateOp.run!(parent_id: "bar", value: "new node")
+    render_op Operation::CreateOp.run!(params)
   end
 
   def update
-    render_op Operation::UpdateOp.run!(item_id: "01931212-02ab-7cae-9233-b14c215dffcb", value: "foo")
+    render_op Operation::UpdateOp.run!(params)
   end
 
   def remove
-    render_op Operation::RemoveOp.run!(item_id: "01931212-02ab-7cae-9233-b14c215dffcb")
+    render_op Operation::RemoveOp.run!(params)
   end
 
   def load_action
+    render_op Operation::LoadOp.run!(params)
   end
 
   private

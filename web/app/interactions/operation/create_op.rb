@@ -10,6 +10,6 @@ class Operation::CreateOp < ActiveInteraction::Base
     # TODO check item_id not exist
     # TODO check parent_id exist
     op = Operation::Create.new(inputs)
-    apply_op(op)
+    apply_to_cache_origin(op)
   end
 end

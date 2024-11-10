@@ -2,10 +2,10 @@ Rails.application.routes.draw do
   namespace :api do
     resource :operations, only: [] do
       collection do
-        get "create"
-        get "update"
-        get "remove"
-        get "load", action: :load_action
+        post "create"
+        post "update"
+        post "remove"
+        post "load", action: :load_action
       end
     end
   end
