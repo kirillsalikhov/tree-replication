@@ -1,10 +1,8 @@
 module Misc
-  # Pretty print db origin tree
   def self.dump_db_tree
     dump_tree(Item.hash_tree)
   end
 
-  # Pretty print cache origin tree
   def self.dump_cache_tree
     idx = CachedItem
       .all
@@ -20,6 +18,7 @@ module Misc
       else
         acc[item] = r[:children]
       end
+
       acc
     }
 
@@ -38,7 +37,7 @@ module Misc
 
     walk.call(tree) { |node, depth|
       pad = "  " * depth
-      puts "#{pad} #{node.value} (#{depth}), deleted: #{node.is_deleted} "
+      puts "#{pad} #{node.value} (#{depth}), del: #{node.is_deleted} -- #{node.id}"
     }
   end
 end

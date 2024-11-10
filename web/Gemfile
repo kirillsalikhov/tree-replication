@@ -8,6 +8,7 @@ gem "puma", ">= 5.0"
 gem "importmap-rails"
 
 gem "closure_tree"
+gem "active_interaction", "~> 5.3"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -16,8 +17,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 group :development, :test do
-
-  gem 'dotenv'
+  gem "dotenv"
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

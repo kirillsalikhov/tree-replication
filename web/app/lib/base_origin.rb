@@ -1,6 +1,7 @@
 class BaseOrigin
   include OpRegisterable
   register_op Operation::Create, :apply_create
+  register_op Operation::Update, :apply_update
 
   def apply(operations)
     operations.each do |op|
