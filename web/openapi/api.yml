@@ -1,0 +1,195 @@
+openapi: 3.1.0
+info:
+  title: API spec, mainly for client generation
+  version: 0.0.1
+paths:
+  "/api/operations/create":
+    post:
+      summary: Creates Operation::Create
+      operationId: create
+      tags:
+        - Operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - parent_id
+                - value
+              properties:
+                item_id:
+                  type: string
+                  format: uuid
+                parent_id:
+                  type: string
+                  format: uuid
+                value:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OperationCreate"
+
+  "/api/operations/update":
+    post:
+      summary: Creates Operation::Update
+      operationId: update
+      tags:
+        - Operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+                - value
+              properties:
+                item_id:
+                  type: string
+                  format: uuid
+                value:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OperationUpdate"
+
+  "/api/operations/remove":
+    post:
+      summary: Creates Operation::Remove
+      operationId: remove
+      tags:
+        - Operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+              properties:
+                item_id:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OperationRemove"
+
+  "/api/operations/load":
+    post:
+      summary: Creates Operation::Load
+      operationId: load
+      tags:
+        - Operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+              properties:
+                item_id:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OperationLoad"
+
+components:
+  schemas:
+    OperationBase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+          required:
+            - id
+        created_at:
+          type: string
+          format: date_time
+        updated_at:
+          type: string
+          format: date_time
+      required:
+        - id
+        - created_at
+        - updated_at
+
+    OperationCreate:
+      allOf:
+        - $ref: "#/components/schemas/OperationBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                parent_id:
+                  type: string
+                  format: uuid
+                value:
+                  type: string
+              required:
+                - parent_id
+                - value
+
+    OperationUpdate:
+      allOf:
+        - $ref: "#/components/schemas/OperationBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                value:
+                  type: string
+              required:
+                - value
+
+    OperationRemove:
+      allOf:
+        - $ref: "#/components/schemas/OperationBase"
+
+    OperationLoad:
+      allOf:
+        - $ref: "#/components/schemas/OperationBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                parent_id:
+                  type: [string, 'null']
+                  format: uuid
+                value:
+                  type: string
+              required:
+                - parent_id
+                - value
