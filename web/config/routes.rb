@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     resource :operations, only: [] do
       collection do
-        post "create"
-        post "update"
+        post "create", as: "create"
+        post "update", as: "update"
         post "remove"
         post "load", action: :load_action
       end

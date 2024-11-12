@@ -10,8 +10,7 @@ RSpec.describe "Api::Operations", type: :request do
       }
     }
 
-    # TODO change to path helper
-    subject(:request) { post "/api/operations/create", params: valid_params, as: :json }
+    subject(:request) { post create_api_operations_path, params: valid_params, as: :json }
 
     before { request }
 
@@ -37,7 +36,7 @@ RSpec.describe "Api::Operations", type: :request do
     let(:cached_item) { create(:cached_item) }
     let(:valid_params) { { item_id: cached_item.id, value: "Changed name" } }
 
-    subject(:request) { post "/api/operations/update", params: valid_params, as: :json }
+    subject(:request) { post update_api_operations_path, params: valid_params, as: :json }
 
     it "valid schema response" do
       request
@@ -60,7 +59,7 @@ RSpec.describe "Api::Operations", type: :request do
     let(:cached_item) { create(:cached_item) }
     let(:valid_params) { { item_id: cached_item.id } }
 
-    subject(:request) { post "/api/operations/remove", params: valid_params, as: :json }
+    subject(:request) { post remove_api_operations_path, params: valid_params, as: :json }
 
     it "valid schema response" do
       request
@@ -86,7 +85,7 @@ RSpec.describe "Api::Operations", type: :request do
     let(:item) { create(:item) }
     let(:valid_params) { { item_id: item.id } }
 
-    subject(:request) { post "/api/operations/load", params: valid_params, as: :json }
+    subject(:request) { post load_api_operations_path, params: valid_params, as: :json }
 
     before { request }
 
