@@ -1,4 +1,4 @@
-import { init } from "../app/init.jsx";
+import { init } from "@/app/init";
 
 init();
 // To see this message, add the following to the `<head>` section in your
