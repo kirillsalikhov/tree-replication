@@ -1,12 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
-    resource :operations, only: [] do
-      collection do
-        post "create", as: "create"
-        post "update", as: "update"
-        post "remove"
-        post "load", action: :load_action
-      end
+    resources :cached_items, only: [ :index, :create, :update, :destroy ] do
+      post "load", on: :collection, action: :load_from_db
     end
   end
 

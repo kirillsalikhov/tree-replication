@@ -3,21 +3,33 @@ info:
   title: API spec, mainly for client generation
   version: 0.0.1
 paths:
-  "/api/operations/create":
+  "/api/cached_items":
+    get:
+      summary: Get cached items list
+      operationId: cached_items
+      tags:
+        - CachedItems
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ItemBase"
+
     post:
-      summary: Creates Operation::Create
+      summary: Create new CachedItem
       operationId: create
       tags:
-        - Operation
+        - CachedItems
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - parent_id
-                - value
               properties:
                 item_id:
                   type: string
@@ -27,97 +39,111 @@ paths:
                   format: uuid
                 value:
                   type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/OperationCreate"
-
-  "/api/operations/update":
-    post:
-      summary: Creates Operation::Update
-      operationId: update
-      tags:
-        - Operation
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
               required:
-                - item_id
+                - parent_id
                 - value
-              properties:
-                item_id:
-                  type: string
-                  format: uuid
-                value:
-                  type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/OperationUpdate"
+                "$ref": "#/components/schemas/ItemBase"
 
-  "/api/operations/remove":
+  "/api/cached_items/load":
     post:
-      summary: Creates Operation::Remove
-      operationId: remove
-      tags:
-        - Operation
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - item_id
-              properties:
-                item_id:
-                  type: string
-                  format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/OperationRemove"
-
-  "/api/operations/load":
-    post:
-      summary: Creates Operation::Load
+      summary: Load Item to CachedItem
       operationId: load
       tags:
-        - Operation
+        - CachedItems
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - item_id
               properties:
                 item_id:
                   type: string
                   format: uuid
+              required:
+                - item_id
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/OperationLoad"
+                "$ref": "#/components/schemas/ItemBase"
+
+  "/api/cached_items/{id}":
+    parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
+    patch:
+      summary: Update CachedItem
+      operationId: update
+      tags:
+        - CachedItems
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: string
+              required:
+                - value
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemBase"
+    delete:
+      summary: Mark CachedItem as deleted
+      operationId: remove
+      tags:
+        - CachedItems
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ItemBase"
 
 components:
   schemas:
+    ItemBase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        parent_id:
+          type: [ string, 'null' ]
+          format: uuid
+        value:
+          type: string
+        created_at:
+          type: string
+          format: date_time
+        updated_at:
+          type: string
+          format: date_time
+      required:
+        - id
+        - parent_id
+        - value
+
     OperationBase:
       type: object
       properties:
@@ -142,54 +168,3 @@ components:
         - id
         - created_at
         - updated_at
-
-    OperationCreate:
-      allOf:
-        - $ref: "#/components/schemas/OperationBase"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                parent_id:
-                  type: string
-                  format: uuid
-                value:
-                  type: string
-              required:
-                - parent_id
-                - value
-
-    OperationUpdate:
-      allOf:
-        - $ref: "#/components/schemas/OperationBase"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                value:
-                  type: string
-              required:
-                - value
-
-    OperationRemove:
-      allOf:
-        - $ref: "#/components/schemas/OperationBase"
-
-    OperationLoad:
-      allOf:
-        - $ref: "#/components/schemas/OperationBase"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                parent_id:
-                  type: [string, 'null']
-                  format: uuid
-                value:
-                  type: string
-              required:
-                - parent_id
-                - value
