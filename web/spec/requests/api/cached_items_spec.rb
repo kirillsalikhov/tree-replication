@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Api::CachedItems", type: :request do
-  describe "GET /cached_items" do
+  describe "GET /api/cached_items" do
     let!(:cached_items) { create_list(:cached_item, 5) }
 
     subject(:request) { get api_cached_items_path, as: :json }

@@ -3,6 +3,22 @@ info:
   title: API spec, mainly for client generation
   version: 0.0.1
 paths:
+  "/api/items":
+    get:
+      summary: Get items list
+      operationId: items
+      tags:
+        - Items
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ItemBase"
+
   "/api/cached_items":
     get:
       summary: Get cached items list
