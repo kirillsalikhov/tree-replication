@@ -149,6 +149,8 @@ components:
           format: uuid
         value:
           type: string
+        is_deleted:
+          type: boolean
         created_at:
           type: string
           format: date_time
