@@ -2,13 +2,13 @@ Rails.application.routes.draw do
   namespace :api do
     resources :items, only: [ :index ] do
       # TODO change to post
+      # TODO rename apply-cache
       get :apply_cache, on: :collection
     end
 
     resources :cached_items, only: [ :index, :create, :update, :destroy ] do
       post "load", on: :collection, action: :load_from_db
-      # TODO change to post
-      get :reset_cache, on: :collection
+      post "reset-cache", on: :collection
     end
   end
 

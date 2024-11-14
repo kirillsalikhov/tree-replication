@@ -17,7 +17,7 @@ RSpec.describe "Api::CachedItems", type: :request do
     end
   end
 
-  describe "POST /api/cached_item" do
+  describe "POST /api/cached_items" do
     let(:parent_cached_item) { create(:cached_item) }
     let(:valid_params) {
       {
@@ -26,7 +26,7 @@ RSpec.describe "Api::CachedItems", type: :request do
       }
     }
 
-    subject(:request) { post api_cached_items_url, params: valid_params, as: :json }
+    subject(:request) { post api_cached_items_path, params: valid_params, as: :json }
 
     before { request }
 
@@ -120,6 +120,23 @@ RSpec.describe "Api::CachedItems", type: :request do
       op = Operation::Remove.last
       expect(op).to be_present
       expect(op.item_id).to eq(json_body[:id])
+    end
+  end
+
+  describe "POST /api/cached_items/reset-cache" do
+    let!(:cached_items) { create_list(:cached_item, 5) }
+    let!(:operation_update) { create_list(:operation_update, 4, item: cached_items[0]) }
+
+    subject(:request) { post reset_cache_api_cached_items_path, as: :json }
+
+    it "has valid schema response" do
+      request
+      assert_api_conform(status: 204)
+    end
+
+    it "wipes all CachedItems" do
+      expect { request }.to change { CachedItem.count }.from(5).to(0)
+        .and change { Operation::Base.count }.from(4).to(0)
     end
   end
 end
