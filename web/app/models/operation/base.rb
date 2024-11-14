@@ -1,6 +1,8 @@
 class Operation::Base < ApplicationRecord
   self.table_name = "operations"
 
+  scope :not_applied, -> { where(applied_to_db: false).order(:id) }
+
   store :data, accessors: [ :id ], prefix: :item
   validates :item_id, presence: true
 

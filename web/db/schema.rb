@@ -42,6 +42,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_08_093613) do
   create_table "operations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.json "data"
     t.string "type"
+    t.boolean "applied_to_db", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

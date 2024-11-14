@@ -19,6 +19,11 @@ class Api::CachedItemsController < Api::ApplicationController
     render_op_item Operation::RemoveOp.run!(destroy_params)
   end
 
+  def reset_cache
+    ResetCache.run!
+    head :no_content
+  end
+
   private
 
   # @param op [Operation::Base]
