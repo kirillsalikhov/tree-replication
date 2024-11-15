@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :items, only: [ :index ] do
       post "apply-cache", on: :collection
+      post "reset-to-preset", on: :collection
     end
 
     resources :cached_items, only: [ :index, :create, :update, :destroy ] do

@@ -1,6 +1,10 @@
+def set_default_preset
+  return if Item.any?
+  ResetToPreset.run!(name: "4-level")
+end
+
 def create_items
   return if Item.any?
-
   new_item = _create_item_seq
 
   root = new_item.()
@@ -20,4 +24,5 @@ def _create_item_seq
   end
 end
 
-create_items
+set_default_preset
+# create_items

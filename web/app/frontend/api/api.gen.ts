@@ -31,6 +31,10 @@ export type CreateBody = {
   value: string;
 };
 
+export type ResetToPresetBody = {
+  name: string;
+};
+
 export type OperationBaseData = {
   id: string;
 };
@@ -254,6 +258,95 @@ export const useApplyCache = <TError = unknown, TContext = unknown>(options?: {
   TContext
 > => {
   const mutationOptions = getApplyCacheMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+/**
+ * @summary Reset items to preset
+ */
+export type resetToPresetResponse = {
+  data: void;
+  status: number;
+};
+
+export const getResetToPresetUrl = () => {
+  return `/api/items/reset-to-preset`;
+};
+
+export const resetToPreset = async (
+  resetToPresetBody: ResetToPresetBody,
+  options?: RequestInit,
+): Promise<resetToPresetResponse> => {
+  const res = await fetch(getResetToPresetUrl(), {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(resetToPresetBody),
+  });
+  const data = await res.json();
+
+  return { status: res.status, data };
+};
+
+export const getResetToPresetMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resetToPreset>>,
+    TError,
+    { data: ResetToPresetBody },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof resetToPreset>>,
+  TError,
+  { data: ResetToPresetBody },
+  TContext
+> => {
+  const { mutation: mutationOptions, fetch: fetchOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof resetToPreset>>,
+    { data: ResetToPresetBody }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return resetToPreset(data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ResetToPresetMutationResult = NonNullable<
+  Awaited<ReturnType<typeof resetToPreset>>
+>;
+export type ResetToPresetMutationBody = ResetToPresetBody;
+export type ResetToPresetMutationError = unknown;
+
+/**
+ * @summary Reset items to preset
+ */
+export const useResetToPreset = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resetToPreset>>,
+    TError,
+    { data: ResetToPresetBody },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof resetToPreset>>,
+  TError,
+  { data: ResetToPresetBody },
+  TContext
+> => {
+  const mutationOptions = getResetToPresetMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

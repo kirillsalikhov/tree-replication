@@ -29,6 +29,27 @@ paths:
         "200":
           description: OK
 
+  "/api/items/reset-to-preset":
+    post:
+      summary: Reset items to preset
+      operationId: resetToPreset
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                 type: string
+              required:
+                - name
+      responses:
+        "200":
+          description: OK
+
   "/api/cached_items":
     get:
       summary: Get cached items list

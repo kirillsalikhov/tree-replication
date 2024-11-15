@@ -8,4 +8,9 @@ class Api::ItemsController < Api::ApplicationController
     # workaround for Orval + fetch + no_content
     render json: { ok: true }
   end
+
+  def reset_to_preset
+    ResetToPreset.run!(params)
+    render json: { ok: true }
+  end
 end

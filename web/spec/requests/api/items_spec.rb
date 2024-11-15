@@ -57,4 +57,34 @@ RSpec.describe "Api::Items", type: :request do
       expect(ops.map(&:applied_to_db)).to all(eq(true))
     end
   end
+
+  describe "POST /api/items/reset-to-preset" do
+    let!(:cached_item) { create(:cached_item) }
+    let!(:operation) { create(:operation_update, item: cached_item) }
+    let!(:old_item) { create(:item) }
+
+    let(:valid_params) { { name: 'root-only' } }
+
+    subject(:request) { post reset_to_preset_api_items_path, params: valid_params, as: :json }
+
+    before { subject }
+
+    it "has valid schema response" do
+      assert_api_conform(status: 200)
+    end
+
+    it "wipes CacheItems and Ops" do
+      expect(CachedItem.count).to eq(0)
+      expect(Operation::Base.count).to eq(0)
+    end
+
+    it "wipes old items" do
+      expect(Item.exists?(old_item.id)).to eq(false)
+    end
+
+    it "it creates new items for preset 'root-only'" do
+      expect(Item.count).to eq(1)
+      expect(Item.first.value).to eq("Root Node")
+    end
+  end
 end

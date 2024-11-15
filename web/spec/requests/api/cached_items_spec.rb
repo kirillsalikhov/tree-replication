@@ -123,7 +123,7 @@ RSpec.describe "Api::CachedItems", type: :request do
     end
   end
 
-  describe "POST /api/cached_items/reset-cache" do
+  describe "DELETE /api/cached_items/reset-cache" do
     let!(:cached_items) { create_list(:cached_item, 5) }
     let!(:operation_update) { create_list(:operation_update, 4, item: cached_items[0]) }
 
