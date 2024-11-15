@@ -127,7 +127,7 @@ RSpec.describe "Api::CachedItems", type: :request do
     let!(:cached_items) { create_list(:cached_item, 5) }
     let!(:operation_update) { create_list(:operation_update, 4, item: cached_items[0]) }
 
-    subject(:request) { post reset_cache_api_cached_items_path, as: :json }
+    subject(:request) { delete reset_cache_api_cached_items_path, as: :json }
 
     it "has valid schema response" do
       request

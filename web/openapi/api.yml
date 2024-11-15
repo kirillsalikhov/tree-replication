@@ -19,6 +19,16 @@ paths:
                 items:
                   "$ref": "#/components/schemas/ItemBase"
 
+  "/api/items/apply-cache":
+    post:
+      summary: Apply Operations to items
+      operationId: resetCache
+      tags:
+        - Items
+      responses:
+        "204":
+          description: OK
+
   "/api/cached_items":
     get:
       summary: Get cached items list
@@ -93,7 +103,7 @@ paths:
                 "$ref": "#/components/schemas/ItemBase"
 
   "/api/cached_items/reset-cache":
-    post:
+    delete:
       summary: Reset CachedItems and Operations
       operationId: resetCache
       tags:
