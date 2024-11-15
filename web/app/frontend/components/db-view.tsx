@@ -7,12 +7,15 @@ import {
 import { TreeNode } from 'primereact/treenode';
 import {
   getCachedItemsQueryKey,
+  getItemsQueryKey,
   ItemBase,
+  useApplyCache,
   useItems,
   useLoad,
 } from '@/api/api.gen';
 import { buildTree } from '@/components/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { Button } from 'primereact/button';
 
 export const DbView = () => {
   const queryClient = useQueryClient();
@@ -37,6 +40,9 @@ export const DbView = () => {
 
   return (
     <div>
+      <div>
+        <ApplyOpsBtn />
+      </div>
       <Tree
         value={nodes}
         nodeTemplate={NodeEl}
@@ -51,4 +57,25 @@ const NodeEl = (node: TreeNode, options: TreeNodeTemplateOptions) => {
   let label = <b>{node.label}</b>;
 
   return <div className={options.className}>{label}</div>;
+};
+
+const ApplyOpsBtn = () => {
+  const queryClient = useQueryClient();
+  const applyCacheMutation = useApplyCache({
+    mutation: {
+      onSuccess() {
+        queryClient.invalidateQueries({ queryKey: getItemsQueryKey() });
+      },
+    },
+  });
+
+  return (
+    <Button
+      size='small'
+      raised
+      loading={applyCacheMutation.isPending}
+      label='Apply cache'
+      onClick={() => applyCacheMutation.mutate()}
+    />
+  );
 };

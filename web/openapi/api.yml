@@ -22,7 +22,7 @@ paths:
   "/api/items/apply-cache":
     post:
       summary: Apply Operations to items
-      operationId: resetCache
+      operationId: applyCache
       tags:
         - Items
       responses:
