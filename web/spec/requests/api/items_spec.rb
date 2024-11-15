@@ -35,7 +35,7 @@ RSpec.describe "Api::Items", type: :request do
     }
 
     it "has valid schema response" do
-      assert_api_conform(status: 204)
+      assert_api_conform(status: 200)
     end
 
     it "apply update ops" do

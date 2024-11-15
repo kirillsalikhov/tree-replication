@@ -131,7 +131,7 @@ RSpec.describe "Api::CachedItems", type: :request do
 
     it "has valid schema response" do
       request
-      assert_api_conform(status: 204)
+      assert_api_conform(status: 200)
     end
 
     it "wipes all CachedItems" do

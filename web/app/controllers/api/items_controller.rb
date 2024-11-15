@@ -5,6 +5,7 @@ class Api::ItemsController < Api::ApplicationController
 
   def apply_cache
     ApplyCache.run!
-    head :no_content
+    # workaround for Orval + fetch + no_content
+    render json: { ok: true }
   end
 end

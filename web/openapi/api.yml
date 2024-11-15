@@ -26,7 +26,7 @@ paths:
       tags:
         - Items
       responses:
-        "204":
+        "200":
           description: OK
 
   "/api/cached_items":
@@ -109,7 +109,7 @@ paths:
       tags:
         - CachedItems
       responses:
-        "204":
+        "200":
           description: OK
 
   "/api/cached_items/{id}":

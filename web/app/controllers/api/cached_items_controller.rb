@@ -21,7 +21,8 @@ class Api::CachedItemsController < Api::ApplicationController
 
   def reset_cache
     ResetCache.run!
-    head :no_content
+    # workaround for Orval + fetch + no_content
+    render json: { ok: true }
   end
 
   private

@@ -178,6 +178,87 @@ export function useItems<
 }
 
 /**
+ * @summary Reset CachedItems and Operations
+ */
+export type resetCacheResponse = {
+  data: void;
+  status: number;
+};
+
+export const getResetCacheUrl = () => {
+  return `/api/cached_items/reset-cache`;
+};
+
+export const resetCache = async (
+  options?: RequestInit,
+): Promise<resetCacheResponse> => {
+  const res = await fetch(getResetCacheUrl(), {
+    ...options,
+    method: 'DELETE',
+  });
+  const data = await res.json();
+
+  return { status: res.status, data };
+};
+
+export const getResetCacheMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resetCache>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof resetCache>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, fetch: fetchOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof resetCache>>,
+    void
+  > = () => {
+    return resetCache(fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ResetCacheMutationResult = NonNullable<
+  Awaited<ReturnType<typeof resetCache>>
+>;
+
+export type ResetCacheMutationError = unknown;
+
+/**
+ * @summary Reset CachedItems and Operations
+ */
+export const useResetCache = <TError = unknown, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resetCache>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof resetCache>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getResetCacheMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+/**
  * @summary Get cached items list
  */
 export type cachedItemsResponse = {
