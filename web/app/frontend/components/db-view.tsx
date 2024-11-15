@@ -54,9 +54,13 @@ export const DbView = () => {
 };
 
 const NodeEl = (node: TreeNode, options: TreeNodeTemplateOptions) => {
-  let label = <b>{node.label}</b>;
-
-  return <div className={options.className}>{label}</div>;
+  const item: ItemBase = node.data;
+  return (
+    <div className={options.className}>
+      <b>{node.label} </b>
+      {item.is_deleted && <span className='text-red-600'>(deleted)</span>}
+    </div>
+  );
 };
 
 const ApplyOpsBtn = () => {
