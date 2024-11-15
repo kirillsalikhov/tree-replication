@@ -10,6 +10,7 @@ import {
   useCachedItems,
   useCreate,
   useRemove,
+  useResetCache,
   useUpdate,
 } from '@/api/api.gen';
 import { buildTree } from '@/components/utils';
@@ -52,6 +53,9 @@ export const CacheView = () => {
 
   return (
     <div>
+      <div>
+        <ResetCacheBtn />
+      </div>
       <Tree
         value={nodes}
         nodeTemplate={nodeTemplate}
@@ -115,6 +119,30 @@ const NodeLabel = ({ item, className }: NodeLabelProps) => {
         ></i>
       </span>
     </span>
+  );
+};
+
+const ResetCacheBtn = () => {
+  const queryClient = useQueryClient();
+  const resetCacheMutation = useResetCache({
+    mutation: {
+      onSuccess() {
+        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
+      },
+    },
+  });
+
+  const onClick = () => resetCacheMutation.mutate();
+
+  return (
+    <Button
+      size='small'
+      raised
+      loading={resetCacheMutation.isPending}
+      label='Reset Cache'
+      severity='secondary'
+      onClick={onClick}
+    />
   );
 };
 
