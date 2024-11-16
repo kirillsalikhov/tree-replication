@@ -7,17 +7,14 @@ import {
 import { TreeNode } from 'primereact/treenode';
 import {
   getCachedItemsQueryKey,
-  getItemsQueryKey,
   ItemBase,
-  useApplyCache,
   useItems,
   useLoad,
-  useResetToPreset,
 } from '@/api/api.gen';
 import { buildTree } from '@/components/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button } from 'primereact/button';
-import { SplitButton } from 'primereact/splitbutton';
+import { ResetPresetBtn } from '@/components/reset-preset-btn';
+import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 
 export const DbView = () => {
   const queryClient = useQueryClient();
@@ -44,7 +41,7 @@ export const DbView = () => {
     <div>
       <div>
         <ApplyOpsBtn />
-        <PresetBtn />
+        <ResetPresetBtn />
       </div>
       <Tree
         value={nodes}
@@ -63,67 +60,5 @@ const NodeEl = (node: TreeNode, options: TreeNodeTemplateOptions) => {
       <b>{node.label} </b>
       {item.is_deleted && <span className='text-red-600'>(deleted)</span>}
     </div>
-  );
-};
-
-const ApplyOpsBtn = () => {
-  const queryClient = useQueryClient();
-  const applyCacheMutation = useApplyCache({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: getItemsQueryKey() });
-      },
-    },
-  });
-
-  return (
-    <Button
-      size='small'
-      raised
-      loading={applyCacheMutation.isPending}
-      label='Apply cache'
-      onClick={() => applyCacheMutation.mutate()}
-    />
-  );
-};
-
-const PresetBtn = () => {
-  const queryClient = useQueryClient();
-  const resetToPresetMutation = useResetToPreset({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries();
-      },
-    },
-  });
-
-  const setPreset = (name = '4-level') => {
-    resetToPresetMutation.mutate({ data: { name } });
-  };
-
-  const list = [
-    {
-      label: '4-level',
-      command: () => setPreset('4-level'),
-    },
-    {
-      label: 'Basic',
-      command: () => setPreset('basic'),
-    },
-    {
-      label: 'Root only',
-      command: () => setPreset('root-only'),
-    },
-  ];
-
-  return (
-    <SplitButton
-      label='Reset'
-      size='small'
-      raised
-      loading={resetToPresetMutation.isPending}
-      onClick={() => setPreset()}
-      model={list}
-    />
   );
 };

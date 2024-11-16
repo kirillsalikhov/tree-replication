@@ -10,7 +10,6 @@ import {
   useCachedItems,
   useCreate,
   useRemove,
-  useResetCache,
   useUpdate,
 } from '@/api/api.gen';
 import { buildTree } from '@/components/utils';
@@ -19,6 +18,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { useQueryClient } from '@tanstack/react-query';
 import { classNames } from 'primereact/utils';
+import { ResetCacheBtn } from '@/components/reset-cache-btn';
 
 export const CacheView = () => {
   const { data } = useCachedItems();
@@ -29,7 +29,7 @@ export const CacheView = () => {
 
   const nodes = buildTree(cachedItems, (node, item) => {
     if (item.is_deleted) {
-      node.className += ' bg-red-50';
+      node.className += ' bg-red-100';
     }
     return node;
   });
@@ -119,30 +119,6 @@ const NodeLabel = ({ item, className }: NodeLabelProps) => {
         ></i>
       </span>
     </span>
-  );
-};
-
-const ResetCacheBtn = () => {
-  const queryClient = useQueryClient();
-  const resetCacheMutation = useResetCache({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
-      },
-    },
-  });
-
-  const onClick = () => resetCacheMutation.mutate();
-
-  return (
-    <Button
-      size='small'
-      raised
-      loading={resetCacheMutation.isPending}
-      label='Reset Cache'
-      severity='secondary'
-      onClick={onClick}
-    />
   );
 };
 

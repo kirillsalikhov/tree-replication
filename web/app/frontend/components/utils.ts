@@ -1,9 +1,11 @@
 import { ItemBase } from '@/api/api.gen';
 import { TreeNode } from 'primereact/treenode';
 
+type ProcessNode = (node: TreeNode, item: ItemBase) => TreeNode;
+
 export function buildTree(
   items: ItemBase[],
-  processNode = (node: TreeNode, item: ItemBase): TreeNode => node,
+  processNode: ProcessNode = (node) => node,
 ) {
   const nodes: TreeNode[] = [];
   items
