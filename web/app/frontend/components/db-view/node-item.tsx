@@ -1,7 +1,7 @@
 import { TreeNode } from 'primereact/treenode';
 import { TreeNodeTemplateOptions } from 'primereact/tree';
-import { ItemBase } from '@/api/api.gen';
 import React from 'react';
+import { ItemBase } from '@/api/gen/api.schemas';
 
 export const NodeItem = (node: TreeNode, options: TreeNodeTemplateOptions) => {
   const item: ItemBase = node.data;

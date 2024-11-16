@@ -1,14 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { Tree, TreeNodeDoubleClickEvent } from 'primereact/tree';
-import { ItemBase, useItems } from '@/api/api.gen';
+import { ContextMenu } from 'primereact/contextmenu';
+import { Button } from 'primereact/button';
 import { buildTree } from '@/components/utils';
 import { ResetPresetBtn } from '@/components/reset-preset-btn';
 import { ApplyOpsBtn } from '@/components/apply-ops-btn';
-import { Button } from 'primereact/button';
 import { useExpandable } from '@/hooks/use-expandable';
-import { ContextMenu } from 'primereact/contextmenu';
 import { NodeItem } from '@/components/db-view/node-item';
 import { useLoadMutation } from '@/api/use-load-mutation';
+import { ItemBase } from '@/api/gen/api.schemas';
+import { useItems } from '@/api/gen/items/items';
 
 export const DbView = () => {
   const { data } = useItems();

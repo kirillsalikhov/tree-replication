@@ -1,5 +1,5 @@
-import { ItemBase } from '@/api/api.gen';
 import { TreeNode } from 'primereact/treenode';
+import { ItemBase } from '@/api/gen/api.schemas';
 
 type ProcessNode = (node: TreeNode, item: ItemBase) => TreeNode;
 

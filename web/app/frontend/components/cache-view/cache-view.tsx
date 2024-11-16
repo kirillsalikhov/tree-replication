@@ -4,17 +4,18 @@ import {
   TreeNodeTemplateOptions,
 } from 'primereact/tree';
 import React, { useRef, useState } from 'react';
-import { ItemBase, useCachedItems } from '@/api/api.gen';
-import { buildTree } from '@/components/utils';
 import { TreeNode } from 'primereact/treenode';
 import { Button } from 'primereact/button';
+import { ContextMenu } from 'primereact/contextmenu';
+import { buildTree } from '@/components/utils';
 import { ResetCacheBtn } from '@/components/reset-cache-btn';
 import { useExpandable } from '@/hooks/use-expandable';
 import { NodeView } from '@/components/cache-view/node-view';
 import { NodeEdit } from '@/components/cache-view/node-edit';
-import { ContextMenu } from 'primereact/contextmenu';
 import { useCreateMutation } from '@/api/use-create-mutation';
 import { useRemoveMutation } from '@/api/use-remove-mutation';
+import { useCachedItems } from '@/api/gen/cached-items/cached-items';
+import { ItemBase } from '@/api/gen/api.schemas';
 
 export const CacheView = () => {
   const { data } = useCachedItems();
