@@ -19,10 +19,13 @@ import { Button } from 'primereact/button';
 import { useQueryClient } from '@tanstack/react-query';
 import { classNames } from 'primereact/utils';
 import { ResetCacheBtn } from '@/components/reset-cache-btn';
+import { useExpandable } from '@/hooks/use-expandable';
 
 export const CacheView = () => {
   const { data } = useCachedItems();
   const [editedId, setEditId] = useState<string | null>(null);
+  const { expandAll, collapseAll, expandedKeys, setExpandedKeys } =
+    useExpandable(data?.data);
 
   if (!data) return <div className='p-4 text-center'>...Loading</div>;
   const cachedItems = data.data;
@@ -54,12 +57,28 @@ export const CacheView = () => {
   return (
     <div>
       <div>
+        <Button
+          type='button'
+          icon='pi pi-plus'
+          size='small'
+          label='Expand All'
+          onClick={expandAll}
+        />
+        <Button
+          type='button'
+          icon='pi pi-minus'
+          size='small'
+          label='Collapse All'
+          onClick={collapseAll}
+        />
         <ResetCacheBtn />
       </div>
       <Tree
         value={nodes}
         nodeTemplate={nodeTemplate}
         onNodeDoubleClick={onDoubleClick}
+        expandedKeys={expandedKeys}
+        onToggle={(e) => setExpandedKeys(e.value)}
         className='md:w-30rem w-full'
       />
     </div>

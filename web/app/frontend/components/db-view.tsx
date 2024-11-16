@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Tree,
   TreeNodeDoubleClickEvent,
@@ -15,6 +15,8 @@ import { buildTree } from '@/components/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { ResetPresetBtn } from '@/components/reset-preset-btn';
 import { ApplyOpsBtn } from '@/components/apply-ops-btn';
+import { Button } from 'primereact/button';
+import { useExpandable } from '@/hooks/use-expandable';
 
 export const DbView = () => {
   const queryClient = useQueryClient();
@@ -27,6 +29,8 @@ export const DbView = () => {
   });
 
   const { data } = useItems();
+  const { expandAll, collapseAll, expandedKeys, setExpandedKeys } =
+    useExpandable(data?.data);
 
   if (!data) return <div className='p-4 text-center'>...Loading</div>;
   const items = data.data;
@@ -40,11 +44,28 @@ export const DbView = () => {
   return (
     <div>
       <div>
+        <Button
+          type='button'
+          icon='pi pi-plus'
+          size='small'
+          label='Expand All'
+          onClick={expandAll}
+        />
+        <Button
+          type='button'
+          icon='pi pi-minus'
+          size='small'
+          label='Collapse All'
+          onClick={collapseAll}
+        />
+
         <ApplyOpsBtn />
         <ResetPresetBtn />
       </div>
       <Tree
         value={nodes}
+        expandedKeys={expandedKeys}
+        onToggle={(e) => setExpandedKeys(e.value)}
         nodeTemplate={NodeEl}
         className='md:w-30rem w-full'
         onNodeDoubleClick={onDoubleClick}
