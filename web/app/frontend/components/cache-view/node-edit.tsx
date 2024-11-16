@@ -1,8 +1,9 @@
-import { getCachedItemsQueryKey, ItemBase, useUpdate } from '@/api/api.gen';
+// import { ItemBase } from '@/api/api.gen';
 import React, { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { useUpdateMutation } from '@/api/use-update-mutation';
+import { ItemBase } from '@/api/gen/api.schemas';
 
 interface NodeEditProps {
   item: ItemBase;
@@ -11,14 +12,7 @@ interface NodeEditProps {
 
 export const NodeEdit = ({ item, onClose }: NodeEditProps) => {
   const [value, setValue] = useState(item.value);
-  const queryClient = useQueryClient();
-  const updateMutation = useUpdate({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
-      },
-    },
-  });
+  const updateMutation = useUpdateMutation();
 
   const save = () => {
     updateMutation.mutate({ id: item.id, data: { value: value } });

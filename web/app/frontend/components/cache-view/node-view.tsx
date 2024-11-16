@@ -1,15 +1,8 @@
-import {
-  getCachedItemsQueryKey,
-  ItemBase,
-  useCreate,
-  useRemove,
-} from '@/api/api.gen';
-import { useQueryClient } from '@tanstack/react-query';
 import { classNames } from 'primereact/utils';
 import React from 'react';
-
-let counter = 1;
-const newValue = () => `New node ${counter++}`;
+import { useRemoveMutation } from '@/api/use-remove-mutation';
+import { useCreateMutation } from '@/api/use-create-mutation';
+import { ItemBase } from '@/api/gen/api.schemas';
 
 interface NodeViewProps {
   item: ItemBase;
@@ -17,31 +10,15 @@ interface NodeViewProps {
 }
 
 export const NodeView = ({ item, className }: NodeViewProps) => {
-  const queryClient = useQueryClient();
-  const removeMutation = useRemove({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
-      },
-    },
-  });
-
-  const createMutation = useCreate({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
-      },
-    },
-  });
+  const removeMutation = useRemoveMutation();
+  const { createDefault } = useCreateMutation();
 
   const removeClick = () => {
     removeMutation.mutate({ id: item.id });
   };
 
   const addClick = () => {
-    createMutation.mutate({
-      data: { parent_id: item.id, value: newValue() },
-    });
+    createDefault(item.id);
   };
 
   return (

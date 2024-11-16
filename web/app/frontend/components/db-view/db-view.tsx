@@ -1,36 +1,24 @@
 import React, { useRef, useState } from 'react';
 import { Tree, TreeNodeDoubleClickEvent } from 'primereact/tree';
-import {
-  getCachedItemsQueryKey,
-  ItemBase,
-  useItems,
-  useLoad,
-} from '@/api/api.gen';
+import { ItemBase, useItems } from '@/api/api.gen';
 import { buildTree } from '@/components/utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { ResetPresetBtn } from '@/components/reset-preset-btn';
 import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 import { Button } from 'primereact/button';
 import { useExpandable } from '@/hooks/use-expandable';
 import { ContextMenu } from 'primereact/contextmenu';
 import { NodeItem } from '@/components/db-view/node-item';
+import { useLoadMutation } from '@/api/use-load-mutation';
 
 export const DbView = () => {
-  const queryClient = useQueryClient();
-  const loadMutation = useLoad({
-    mutation: {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
-      },
-    },
-  });
-
   const { data } = useItems();
   const { expandAll, collapseAll, expandedKeys, setExpandedKeys } =
     useExpandable(data?.data);
   const [selectedNodeKey, setSelectedNodeKey] = useState<string | undefined>(
     undefined,
   );
+
+  const loadMutation = useLoadMutation();
 
   const cm = useRef<ContextMenu>(null);
 
