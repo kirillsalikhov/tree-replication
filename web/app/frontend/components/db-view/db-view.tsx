@@ -77,11 +77,11 @@ export const DbView = () => {
       </div>
       <ContextMenu model={menu} ref={cm} />
       <Tree
+        className='md:w-30rem w-full'
         value={nodes}
+        nodeTemplate={NodeItem}
         expandedKeys={expandedKeys}
         onToggle={(e) => setExpandedKeys(e.value)}
-        nodeTemplate={NodeItem}
-        className='md:w-30rem w-full'
         onNodeDoubleClick={onDoubleClick}
         contextMenuSelectionKey={selectedNodeKey}
         onContextMenuSelectionChange={(e) =>

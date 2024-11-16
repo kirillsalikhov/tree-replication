@@ -3,7 +3,7 @@ import {
   TreeNodeDoubleClickEvent,
   TreeNodeTemplateOptions,
 } from 'primereact/tree';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ItemBase, useCachedItems } from '@/api/api.gen';
 import { buildTree } from '@/components/utils';
 import { TreeNode } from 'primereact/treenode';
@@ -12,12 +12,18 @@ import { ResetCacheBtn } from '@/components/reset-cache-btn';
 import { useExpandable } from '@/hooks/use-expandable';
 import { NodeView } from '@/components/cache-view/node-view';
 import { NodeEdit } from '@/components/cache-view/node-edit';
+import { ContextMenu } from 'primereact/contextmenu';
 
 export const CacheView = () => {
   const { data } = useCachedItems();
   const [editedId, setEditId] = useState<string | null>(null);
   const { expandAll, collapseAll, expandedKeys, setExpandedKeys } =
     useExpandable(data?.data);
+
+  const [selectedNodeKey, setSelectedNodeKey] = useState<string | undefined>(
+    undefined,
+  );
+  const cm = useRef<ContextMenu>(null);
 
   if (!data) return <div className='p-4 text-center'>...Loading</div>;
   const cachedItems = data.data;
@@ -37,6 +43,30 @@ export const CacheView = () => {
   const onEditClose = () => {
     setEditId(null);
   };
+
+  const menu = [
+    {
+      label: 'Edit',
+      icon: 'pi pi-pencil',
+      command: () => selectedNodeKey && setEditId(selectedNodeKey),
+    },
+    {
+      label: 'Create new child',
+      icon: 'pi pi-plus',
+      command: () => {
+        // TODO call mutation when moved
+        console.log('Create new child');
+      },
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-times text-red-400',
+      command: () => {
+        // TODO call mutation when moved
+        console.log('delete');
+      },
+    },
+  ];
 
   const nodeTemplate = (node: TreeNode, options: TreeNodeTemplateOptions) => {
     const item: ItemBase = node.data;
@@ -65,13 +95,19 @@ export const CacheView = () => {
         />
         <ResetCacheBtn />
       </div>
+      <ContextMenu model={menu} ref={cm} />
       <Tree
+        className='md:w-30rem w-full'
         value={nodes}
         nodeTemplate={nodeTemplate}
-        onNodeDoubleClick={onDoubleClick}
         expandedKeys={expandedKeys}
         onToggle={(e) => setExpandedKeys(e.value)}
-        className='md:w-30rem w-full'
+        onNodeDoubleClick={onDoubleClick}
+        contextMenuSelectionKey={selectedNodeKey}
+        onContextMenuSelectionChange={(e) =>
+          setSelectedNodeKey(e.value as string)
+        }
+        onContextMenu={(e) => cm.current?.show(e.originalEvent)}
       />
     </div>
   );
