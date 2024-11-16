@@ -1,25 +1,9 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { getCachedItemsQueryKey, useResetCache } from '@/api/api.gen';
 import { Button } from 'primereact/button';
 import React from 'react';
-import { useToast } from '@/providers/toast-provider';
+import { useResetCacheMutation } from '@/api/use-reset-cache-mutation';
 
 export const ResetCacheBtn = () => {
-  const queryClient = useQueryClient();
-  const { showToast } = useToast();
-
-  const resetCacheMutation = useResetCache({
-    mutation: {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: getCachedItemsQueryKey() });
-        showToast({
-          severity: 'secondary',
-          summary: 'Cache',
-          detail: 'Cache was reset',
-        });
-      },
-    },
-  });
+  const resetCacheMutation = useResetCacheMutation();
 
   const onClick = () => resetCacheMutation.mutate();
 
