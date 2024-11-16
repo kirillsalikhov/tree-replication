@@ -13,9 +13,14 @@ import { useExpandable } from '@/hooks/use-expandable';
 import { NodeView } from '@/components/cache-view/node-view';
 import { NodeEdit } from '@/components/cache-view/node-edit';
 import { ContextMenu } from 'primereact/contextmenu';
+import { useCreateMutation } from '@/api/use-create-mutation';
+import { useRemoveMutation } from '@/api/use-remove-mutation';
 
 export const CacheView = () => {
   const { data } = useCachedItems();
+  const removeMutation = useRemoveMutation();
+  const { createDefault } = useCreateMutation();
+
   const [editedId, setEditId] = useState<string | null>(null);
   const { expandAll, collapseAll, expandedKeys, setExpandedKeys } =
     useExpandable(data?.data);
@@ -26,9 +31,8 @@ export const CacheView = () => {
   const cm = useRef<ContextMenu>(null);
 
   if (!data) return <div className='p-4 text-center'>...Loading</div>;
-  const cachedItems = data.data;
 
-  const nodes = buildTree(cachedItems, (node, item) => {
+  const nodes = buildTree(data.data, (node, item) => {
     if (item.is_deleted) {
       node.className += ' bg-red-100';
     }
@@ -53,18 +57,13 @@ export const CacheView = () => {
     {
       label: 'Create new child',
       icon: 'pi pi-plus',
-      command: () => {
-        // TODO call mutation when moved
-        console.log('Create new child');
-      },
+      command: () => selectedNodeKey && createDefault(selectedNodeKey),
     },
     {
       label: 'Delete',
       icon: 'pi pi-times text-red-400',
-      command: () => {
-        // TODO call mutation when moved
-        console.log('delete');
-      },
+      command: () =>
+        selectedNodeKey && removeMutation.mutate({ id: selectedNodeKey }),
     },
   ];
 

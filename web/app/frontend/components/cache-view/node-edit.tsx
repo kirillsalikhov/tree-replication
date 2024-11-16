@@ -1,4 +1,3 @@
-// import { ItemBase } from '@/api/api.gen';
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
