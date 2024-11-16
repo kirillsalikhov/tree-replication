@@ -1,10 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-  Tree,
-  TreeNodeDoubleClickEvent,
-  TreeNodeTemplateOptions,
-} from 'primereact/tree';
-import { TreeNode } from 'primereact/treenode';
+import { Tree, TreeNodeDoubleClickEvent } from 'primereact/tree';
 import {
   getCachedItemsQueryKey,
   ItemBase,
@@ -18,6 +13,7 @@ import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 import { Button } from 'primereact/button';
 import { useExpandable } from '@/hooks/use-expandable';
 import { ContextMenu } from 'primereact/contextmenu';
+import { NodeItem } from '@/components/db-view/node-item';
 
 export const DbView = () => {
   const queryClient = useQueryClient();
@@ -59,7 +55,7 @@ export const DbView = () => {
   ];
 
   return (
-    <div>
+    <>
       <div>
         <Button
           type='button'
@@ -79,14 +75,12 @@ export const DbView = () => {
         <ApplyOpsBtn />
         <ResetPresetBtn />
       </div>
-
       <ContextMenu model={menu} ref={cm} />
-
       <Tree
         value={nodes}
         expandedKeys={expandedKeys}
         onToggle={(e) => setExpandedKeys(e.value)}
-        nodeTemplate={NodeEl}
+        nodeTemplate={NodeItem}
         className='md:w-30rem w-full'
         onNodeDoubleClick={onDoubleClick}
         contextMenuSelectionKey={selectedNodeKey}
@@ -95,16 +89,6 @@ export const DbView = () => {
         }
         onContextMenu={(e) => cm.current?.show(e.originalEvent)}
       />
-    </div>
-  );
-};
-
-const NodeEl = (node: TreeNode, options: TreeNodeTemplateOptions) => {
-  const item: ItemBase = node.data;
-  return (
-    <div className={options.className}>
-      <b>{node.label} </b>
-      {item.is_deleted && <span className='text-red-600'>(deleted)</span>}
-    </div>
+    </>
   );
 };
