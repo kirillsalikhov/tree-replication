@@ -4,8 +4,8 @@ export default defineConfig({
   api: {
     input: './api.yml',
     output: {
-      target: '../app/frontend/api/api.gen.ts',
-      // fileExtension: '.gen.ts',
+      mode: 'tags-split',
+      target: '../app/frontend/api/gen/api.ts',
       client: 'react-query',
       httpClient: 'fetch',
       prettier: true,
