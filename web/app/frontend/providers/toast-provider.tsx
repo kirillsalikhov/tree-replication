@@ -18,7 +18,11 @@ export const ToastProvider = ({ children }: { children?: React.ReactNode }) => {
   const toastRef = useRef<Toast>(null);
 
   const showToast = (message: ToastMessage) => {
-    toastRef.current?.show(message);
+    const defaults: ToastMessage = {
+      life: 1500,
+    };
+
+    toastRef.current?.show({ ...defaults, ...message });
   };
 
   return (

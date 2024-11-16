@@ -17,7 +17,6 @@ export const ApplyOpsBtn = () => {
           severity: 'success',
           summary: 'Success',
           detail: 'Cache applied to DB',
-          life: 2000,
         });
       },
     },
