@@ -14,8 +14,7 @@ FactoryBot.define do
   end
 
   factory :operation_create, parent: :operation, class: Operation::Create do
-    # TODO if move default id generation to Operation::Create, change it here too
-    data { { id: SecureRandom.uuid_v7 }.merge(build(:item).slice(:value)) }
+    value { Faker::Book.title }
   end
 
   factory :operation_remove, parent: :operation, class: Operation::Remove
