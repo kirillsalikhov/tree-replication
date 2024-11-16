@@ -84,7 +84,7 @@ RSpec.describe "Api::Items", type: :request do
 
     it "it creates new items for preset 'root-only'" do
       expect(Item.count).to eq(1)
-      expect(Item.first.value).to eq("Root Node")
+      expect(Item.first.value).to eq("Root")
     end
   end
 end
