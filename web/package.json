@@ -2,6 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "lint": "eslint .",
     "generate:api": "npx orval --config ./openapi/orval.config.ts"
   },
   "dependencies": {
