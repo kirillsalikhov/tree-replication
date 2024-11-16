@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Tree,
   TreeNodeDoubleClickEvent,
@@ -17,6 +17,7 @@ import { ResetPresetBtn } from '@/components/reset-preset-btn';
 import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 import { Button } from 'primereact/button';
 import { useExpandable } from '@/hooks/use-expandable';
+import { ContextMenu } from 'primereact/contextmenu';
 
 export const DbView = () => {
   const queryClient = useQueryClient();
@@ -31,15 +32,31 @@ export const DbView = () => {
   const { data } = useItems();
   const { expandAll, collapseAll, expandedKeys, setExpandedKeys } =
     useExpandable(data?.data);
+  const [selectedNodeKey, setSelectedNodeKey] = useState<string | undefined>(
+    undefined,
+  );
+
+  const cm = useRef<ContextMenu>(null);
 
   if (!data) return <div className='p-4 text-center'>...Loading</div>;
   const items = data.data;
   const nodes = buildTree(items);
 
+  const loadToCache = (id: string) =>
+    loadMutation.mutate({ data: { item_id: id } });
+
   const onDoubleClick = (evt: TreeNodeDoubleClickEvent) => {
     const item: ItemBase = evt.node.data;
-    loadMutation.mutate({ data: { item_id: item.id } });
+    loadToCache(item.id);
   };
+
+  const menu = [
+    {
+      label: 'Load to Cache',
+      icon: 'pi pi-angle-double-left',
+      command: () => selectedNodeKey && loadToCache(selectedNodeKey),
+    },
+  ];
 
   return (
     <div>
@@ -62,6 +79,9 @@ export const DbView = () => {
         <ApplyOpsBtn />
         <ResetPresetBtn />
       </div>
+
+      <ContextMenu model={menu} ref={cm} />
+
       <Tree
         value={nodes}
         expandedKeys={expandedKeys}
@@ -69,6 +89,11 @@ export const DbView = () => {
         nodeTemplate={NodeEl}
         className='md:w-30rem w-full'
         onNodeDoubleClick={onDoubleClick}
+        contextMenuSelectionKey={selectedNodeKey}
+        onContextMenuSelectionChange={(e) =>
+          setSelectedNodeKey(e.value as string)
+        }
+        onContextMenu={(e) => cm.current?.show(e.originalEvent)}
       />
     </div>
   );
