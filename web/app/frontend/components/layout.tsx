@@ -2,21 +2,16 @@ import React from 'react';
 import { DbView } from '@/components/db-view';
 import { CacheView } from '@/components/cache-view';
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-export const Layout = ({ children }: Props) => {
+export const Layout = () => {
   return (
     <div className='container mx-auto'>
-      <div className='grid grid-cols-4 gap-4 bg-violet-400 px-4 pt-12'>
-        <div className='col-span-2 bg-green-200'>
+      <div className='grid min-h-80 grid-cols-1 gap-4 px-4 pt-12 md:grid-cols-2'>
+        <div className='min-h-64'>
           <CacheView />
         </div>
-        <div className='col-span-2 bg-blue-200'>
+        <div className='min-h-64'>
           <DbView />
         </div>
-        <div className='col-span-4'> {children}</div>
       </div>
     </div>
   );

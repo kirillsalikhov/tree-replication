@@ -5,7 +5,6 @@ import {
 } from 'primereact/tree';
 import React, { useRef, useState } from 'react';
 import { TreeNode } from 'primereact/treenode';
-import { Button } from 'primereact/button';
 import { ContextMenu } from 'primereact/contextmenu';
 import { buildTree } from '@/components/utils';
 import { ResetCacheBtn } from '@/components/reset-cache-btn';
@@ -16,6 +15,8 @@ import { useCreateMutation } from '@/api/use-create-mutation';
 import { useRemoveMutation } from '@/api/use-remove-mutation';
 import { useCachedItems } from '@/api/gen/cached-items/cached-items';
 import { ItemBase } from '@/api/gen/api.schemas';
+import { ExpandAllBtn, CollapseAllBtn } from '@/components/tree-common';
+import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 
 export const CacheView = () => {
   const { data } = useCachedItems();
@@ -78,22 +79,15 @@ export const CacheView = () => {
 
   return (
     <div>
-      <div>
-        <Button
-          type='button'
-          icon='pi pi-plus'
-          size='small'
-          label='Expand All'
-          onClick={expandAll}
-        />
-        <Button
-          type='button'
-          icon='pi pi-minus'
-          size='small'
-          label='Collapse All'
-          onClick={collapseAll}
-        />
-        <ResetCacheBtn />
+      <div className='flex items-center justify-between pb-2'>
+        <div className='flex gap-2'>
+          <ExpandAllBtn onClick={expandAll} />
+          <CollapseAllBtn onClick={collapseAll} />
+        </div>
+        <div className='flex gap-2'>
+          <ResetCacheBtn />
+          <ApplyOpsBtn />
+        </div>
       </div>
       <ContextMenu model={menu} ref={cm} />
       <Tree

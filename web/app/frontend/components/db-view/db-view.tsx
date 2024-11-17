@@ -1,15 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Tree, TreeNodeDoubleClickEvent } from 'primereact/tree';
 import { ContextMenu } from 'primereact/contextmenu';
-import { Button } from 'primereact/button';
 import { buildTree } from '@/components/utils';
 import { ResetPresetBtn } from '@/components/reset-preset-btn';
-import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 import { useExpandable } from '@/hooks/use-expandable';
 import { NodeItem } from '@/components/db-view/node-item';
 import { useLoadMutation } from '@/api/use-load-mutation';
 import { ItemBase } from '@/api/gen/api.schemas';
 import { useItems } from '@/api/gen/items/items';
+import { ExpandAllBtn, CollapseAllBtn } from '@/components/tree-common';
 
 export const DbView = () => {
   const { data } = useItems();
@@ -45,24 +44,14 @@ export const DbView = () => {
 
   return (
     <>
-      <div>
-        <Button
-          type='button'
-          icon='pi pi-plus'
-          size='small'
-          label='Expand All'
-          onClick={expandAll}
-        />
-        <Button
-          type='button'
-          icon='pi pi-minus'
-          size='small'
-          label='Collapse All'
-          onClick={collapseAll}
-        />
-
-        <ApplyOpsBtn />
-        <ResetPresetBtn />
+      <div className='flex items-center justify-between pb-2'>
+        <div className='flex gap-2'>
+          <ExpandAllBtn onClick={expandAll} />
+          <CollapseAllBtn onClick={collapseAll} />
+        </div>
+        <div className='flex gap-2'>
+          <ResetPresetBtn />
+        </div>
       </div>
       <ContextMenu model={menu} ref={cm} />
       <Tree

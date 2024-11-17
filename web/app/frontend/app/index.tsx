@@ -13,7 +13,7 @@ export const App = () => {
       <PrimeReactProvider value={{ unstyled: false, ripple: true }}>
         <QueryClientProvider client={queryClient}>
           <ToastProvider>
-            <Layout>App?</Layout>
+            <Layout />
           </ToastProvider>
         </QueryClientProvider>
       </PrimeReactProvider>
