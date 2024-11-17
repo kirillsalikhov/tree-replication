@@ -2,6 +2,7 @@ class Operation::Base < ApplicationRecord
   self.table_name = "operations"
 
   scope :not_applied, -> { where(applied_to_db: false).order(:id) }
+  scope :by_item_id, ->(item_id) { where("data->>'id' = ?", item_id) }
 
   store_accessor :data,  :id, prefix: :item
   validates :item_id, presence: true
