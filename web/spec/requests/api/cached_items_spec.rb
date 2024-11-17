@@ -72,7 +72,7 @@ RSpec.describe "Api::CachedItems", type: :request do
       op = Operation::Load.last
       expect(op).to be_present
       expect(op.item_id).to eq(json_body[:id])
-      expect(op.data).to eq(item.slice(:id, :parent_id, :value))
+      expect(op.data).to eq(item.slice(:id, :parent_id, :value, :is_deleted))
     end
   end
 
