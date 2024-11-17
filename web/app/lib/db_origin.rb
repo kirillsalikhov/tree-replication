@@ -1,7 +1,4 @@
 class DbOrigin < BaseOrigin
-  register_op Operation::Remove, :apply_remove
-
-  # @param op [Operation::Remove]
   def apply_remove(op)
     item = item_class.find(op.item_id)
     item.is_deleted = true
@@ -12,6 +9,16 @@ class DbOrigin < BaseOrigin
     item_class.transaction do
       item.save!
       descendants.each(&:save!)
+    end
+  end
+
+  def apply_create(op)
+    item_class.transaction do
+      item = super(op)
+      if item.ancestors.any?(&:is_deleted?)
+        item.is_deleted = true
+        item.save!
+      end
     end
   end
 
