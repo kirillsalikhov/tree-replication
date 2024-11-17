@@ -20,12 +20,12 @@ class ResetToPreset < ActiveInteraction::Base
   def load_preset
     @preset = YAML.load_file PRESETS_DIR.join("#{name}.yml")
   rescue Errno::ENOENT
-    errors.add(:preset, "not found", strict: true)
+    raise ActiveRecord::RecordNotFound.new("Preset #{name} not found")
   end
 
   def validate_preset
-    errors.add(:preset, "no roots", strict: true) if @preset.size == 0
-    errors.add(:preset, "more than one root", strict: true) if @preset.size > 1
+    errors.add(:base, "preset has no roots", strict: true) if @preset.size == 0
+    errors.add(:base, "preset has more than one root", strict: true) if @preset.size > 1
   end
 
   def create_tree
