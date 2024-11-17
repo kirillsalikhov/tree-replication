@@ -3,7 +3,7 @@ class Operation::Base < ApplicationRecord
 
   scope :not_applied, -> { where(applied_to_db: false).order(:id) }
 
-  store :data, accessors: [ :id ], prefix: :item
+  store_accessor :data,  :id, prefix: :item
   validates :item_id, presence: true
 
   def initialize(attributes = {})

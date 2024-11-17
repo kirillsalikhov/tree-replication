@@ -44,7 +44,7 @@ RSpec.describe "Api::CachedItems", type: :request do
       op = Operation::Create.last
       expect(op).to be_present
       expect(op.item_id).to eq(json_body[:id])
-      expect(op.data).to include(valid_params)
+      expect(op.data.with_indifferent_access).to include(valid_params)
     end
   end
 
