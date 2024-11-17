@@ -5,7 +5,6 @@ class Operation::UpdateOp < ActiveInteraction::Base
   string :value
 
   def execute
-    # TODO validate if item_id exists
     apply_to_cache_origin(Operation::Update.new(inputs))
   end
 end

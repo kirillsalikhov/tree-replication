@@ -6,7 +6,6 @@ class Operation::CreateOp < ActiveInteraction::Base
   string :value
 
   def execute
-    # TODO check parent_id exist
     op = Operation::Create.new(inputs)
     apply_to_cache_origin(op)
   end
