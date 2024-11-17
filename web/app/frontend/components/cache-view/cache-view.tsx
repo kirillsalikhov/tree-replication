@@ -6,7 +6,6 @@ import {
 import React, { useRef, useState } from 'react';
 import { TreeNode } from 'primereact/treenode';
 import { ContextMenu } from 'primereact/contextmenu';
-import { buildTree } from '@/components/utils';
 import { ResetCacheBtn } from '@/components/reset-cache-btn';
 import { useExpandable } from '@/hooks/use-expandable';
 import { NodeView } from '@/components/cache-view/node-view';
@@ -15,7 +14,11 @@ import { useCreateMutation } from '@/api/use-create-mutation';
 import { useRemoveMutation } from '@/api/use-remove-mutation';
 import { useCachedItems } from '@/api/gen/cached-items/cached-items';
 import { ItemBase } from '@/api/gen/api.schemas';
-import { ExpandAllBtn, CollapseAllBtn } from '@/components/tree-common';
+import {
+  ExpandAllBtn,
+  CollapseAllBtn,
+  buildTree,
+} from '@/components/tree-common';
 import { ApplyOpsBtn } from '@/components/apply-ops-btn';
 
 export const CacheView = () => {
