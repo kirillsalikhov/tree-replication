@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastProvider } from '@/providers/toast-provider';
 
 export const App = () => {
-  // TODO set defaults, especially retry, stale ...
   const [queryClient] = React.useState(() => new QueryClient());
 
   return (
