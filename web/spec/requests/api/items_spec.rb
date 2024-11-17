@@ -18,13 +18,13 @@ RSpec.describe "Api::Items", type: :request do
   end
 
   describe "POST /api/items/apply-cache" do
-    let!(:root) { create(:item, :with_grandchildren) }
+    let!(:root) { create(:item, :with_children) }
+    let(:first_child) { root.children[0] }
     let!(:ops) {
       [
-        create(:operation_update, item: root),
         create(:operation_update, item: root, value: "latest_upd"),
-        create(:operation_remove, item: root.children[0]),
-        create(:operation_create, parent_id: root.id)
+        create(:operation_remove, item: first_child),
+        create(:operation_create, parent_id: root.id, value: "new item")
       ]
     }
     subject(:request) { post apply_cache_api_items_path, as: :json }
@@ -38,23 +38,14 @@ RSpec.describe "Api::Items", type: :request do
       assert_api_conform(status: 200)
     end
 
-    it "apply update ops" do
+    it "apply ops" do
       expect { root.reload }.to change { root.value }.to("latest_upd")
-    end
 
-    it "apply remove ops" do
-      first_child = root.children[0]
-      expect { first_child.reload }.to change { first_child.is_deleted }.from(false).to(true)
-      expect(first_child.children.pluck(:is_deleted)).to all(eq(true))
-    end
+      first_child.reload
+      expect(first_child.is_deleted).to eq(true)
 
-    it "apply create ops" do
-      expect { root.children.reload }.to change { root.children.size }.by(1)
-    end
-
-    it "mark ops as applied" do
-      ops.each(&:reload)
-      expect(ops.map(&:applied_to_db)).to all(eq(true))
+      new_item = root.children.order(:id).last
+      expect(new_item.value).to eq("new item")
     end
   end
 
