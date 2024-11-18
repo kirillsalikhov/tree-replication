@@ -5,6 +5,9 @@
     "lint": "eslint .",
     "generate:api": "npx orval --config ./openapi/orval.config.ts"
   },
+  "engines": {
+    "node" : ">=20.17.0"
+  },
   "dependencies": {
     "@tanstack/react-query": "^5.59.20",
     "primeicons": "^7.0.0",
