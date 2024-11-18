@@ -1,24 +1,37 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Run production mode
 
-Things you may want to cover:
+### Setup
+Requirements:
+- docker, docker compose
 
-* Ruby version
+1. Copy web/sample.env to web/.env
 
-* System dependencies
+### Run 
+1. run ```./integration/bin/main.sh --mod=p up```
+2. open browser 'http://localhost:3000'
 
-* Configuration
+## Dev
 
-* Database creation
+### Setup
+Requirements:
+- docker, docker compose
+- ruby 3.3.6 (MRI)
+- node > 20
 
-* Database initialization
+Inside ./web folder
+1. ```bundle install```
+2. ```npm ci```
+3. in terminal one ```./integration/bin/main.sh up```
+4. in terminal two (folder ./web) ```bundle exec rake db:setup```
 
-* How to run the test suite
+### Run 
+1. in terminal one ```./integration/bin/main.sh up```
+2. in terminal two ```bundle exec rails s```
+3. in terminal three ```bundle exec bin/vite dev```
+4. open browser 'http://localhost:3000'
 
-* Services (job queues, cache servers, search engines, etc.)
+### Test
 
-* Deployment instructions
-
-* ...
+In terminal four run (folder ./web) ```bundle exec rspec```
