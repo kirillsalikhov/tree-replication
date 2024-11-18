@@ -6,7 +6,7 @@
 Requirements:
 - docker, docker compose
 
-Copy web/sample.env to web/.env
+Copy the file web/sample.env to web/.env
 
 ### Run 
 1. run ```./integration/bin/main.sh --mod=p up```
