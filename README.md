@@ -1,6 +1,6 @@
 # README
 
-## Run production mode
+## Run in production mode
 
 ### Setup
 Requirements:
@@ -20,7 +20,7 @@ Requirements:
 - ruby 3.3.6 (MRI)
 - node > 20
 
-Inside ./web folder
+Inside web folder
 1. ```bundle install```
 2. ```npm ci```
 3. in terminal one ```./integration/bin/main.sh up```
