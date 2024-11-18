@@ -12,7 +12,7 @@ Copy the file web/sample.env to web/.env
 1. ```./integration/bin/main.sh --mod=p up```
 2. open browser 'http://localhost:3000'
 
-## Dev
+## Development mode
 
 ### Setup
 Requirements:
