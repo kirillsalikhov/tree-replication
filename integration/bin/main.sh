@@ -33,7 +33,6 @@ do
         ARGS+=("$i")
     fi
 done
-echo $mod
 
 base_compose="-f ../compose/base.yml"
 env_file="--env-file ../../web/.env"
