@@ -1,7 +1,7 @@
 import React from 'react';
 import invariant from 'tiny-invariant';
 import { createRoot } from 'react-dom/client';
-import { App } from './index';
+import { App } from './app';
 
 export const init = () => {
   const rootElement = document.getElementById('app');

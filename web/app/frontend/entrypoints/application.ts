@@ -1,4 +1,4 @@
-import { init } from '@/app/init';
+import { init } from '@/init';
 
 init();
 
