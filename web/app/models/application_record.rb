@@ -10,5 +10,4 @@ class ApplicationRecord < ActiveRecord::Base
 
     self.id ||= SecureRandom.uuid_v7
   end
-
 end
