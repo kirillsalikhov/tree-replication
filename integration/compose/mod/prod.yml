@@ -1,6 +1,6 @@
 services:
   web:
-    image: tree_local
+    image: kirill00sa/tree_replication
     build:
       context: ../../web
     environment:
