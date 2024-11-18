@@ -6,7 +6,7 @@
 Requirements:
 - docker, docker compose
 
-1. Copy web/sample.env to web/.env
+Copy web/sample.env to web/.env
 
 ### Run 
 1. run ```./integration/bin/main.sh --mod=p up```
@@ -24,7 +24,7 @@ Inside ./web folder
 1. ```bundle install```
 2. ```npm ci```
 3. in terminal one ```./integration/bin/main.sh up```
-4. in terminal two (folder ./web) ```bundle exec rake db:setup```
+4. in terminal two (folder web) ```bundle exec rake db:setup```
 
 ### Run 
 1. in terminal one ```./integration/bin/main.sh up```
@@ -34,4 +34,4 @@ Inside ./web folder
 
 ### Test
 
-In terminal four run (folder ./web) ```bundle exec rspec```
+In terminal four run (folder web) ```bundle exec rspec```
