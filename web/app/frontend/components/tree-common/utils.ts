@@ -1,24 +1,22 @@
 import { TreeNode } from 'primereact/treenode';
 import { ItemBase } from '@/api/gen/api.schemas';
 
-type ProcessNode = (node: TreeNode, item: ItemBase) => TreeNode;
+type TreeWalkContext = {
+  ancestorDeleted?: boolean;
+};
 
-export function buildTree(
-  items: ItemBase[],
-  processNode: ProcessNode = (node) => node,
-) {
+type ProcessNode = (node: TreeNode, context: TreeWalkContext) => void;
+
+export function buildTree(items: ItemBase[], processNode?: ProcessNode) {
   const nodes: TreeNode[] = [];
   items
     .reduce((acc, v) => {
-      const node = {
+      return acc.set(v.id, {
         key: v.id,
         label: v.value,
         data: v,
         children: [],
-      };
-
-      acc.set(v.id, processNode(node, v));
-      return acc;
+      });
     }, new Map<string, TreeNode>())
     .forEach((node, id: string, idx) => {
       const parent_id = node.data.parent_id;
@@ -28,5 +26,27 @@ export function buildTree(
         nodes.push(node);
       }
     });
+
+  if (processNode) walk(nodes, processNode);
+
   return nodes;
 }
+
+const walk = (
+  nodes: TreeNode[],
+  processNode: ProcessNode,
+  context: TreeWalkContext = {},
+) => {
+  nodes.forEach((node) => {
+    processNode(node, context);
+
+    const childrenContext = {
+      ...context,
+      ancestorDeleted: context.ancestorDeleted || node.data.is_deleted,
+    };
+
+    if (node.children?.length) {
+      walk(node.children, processNode, childrenContext);
+    }
+  });
+};

@@ -37,11 +37,8 @@ export const CacheView = () => {
 
   if (!data) return <div className='p-4 text-center'>...Loading</div>;
 
-  const nodes = buildTree(data.data, (node, item) => {
-    if (item.is_deleted) {
-      node.className += ' bg-red-100';
-    }
-    return node;
+  const nodes = buildTree(data.data, (node, context) => {
+    if (context.ancestorDeleted) node.data.is_deleted = true;
   });
 
   const onDoubleClick = (evt: TreeNodeDoubleClickEvent) => {
